@@ -181,6 +181,11 @@ input[type='radio']:checked + label {
     fill: white;
 }
 
+.compensate {
+    background:rgba(0, 0, 0, .1);
+    backdrop-filter: blur(4px);
+}
+
 @media screen and (max-width: 925px) {
     .current-weather-container {
         align-items: center;
