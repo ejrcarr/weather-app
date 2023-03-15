@@ -311,7 +311,7 @@ function handleSearch(isF) {
 	MainPage(searchBar.value.replaceAll(' ', '+'), isF);
 	searchBar.value = '';
 	setLoading();
-	setTimeout(fixLoading, 2000);
+	setTimeout(fixLoading, 5000);
 }
 
 function fixLoading() {
