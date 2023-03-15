@@ -1,3 +1,5 @@
+import MainPage from './pages';
+
 const ICONS = {
 	'01d': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>weather-sunny</title><path d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M3.36,17L5.12,13.23C5.26,14 5.53,14.78 5.95,15.5C6.37,16.24 6.91,16.86 7.5,17.37L3.36,17M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7M20.64,17L16.5,17.36C17.09,16.85 17.62,16.22 18.04,15.5C18.46,14.77 18.73,14 18.87,13.21L20.64,17M12,22L9.59,18.56C10.33,18.83 11.14,19 12,19C12.82,19 13.63,18.83 14.37,18.56L12,22Z" /></svg>`,
 	'01n': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>weather-sunset</title><path d="M3,12H7A5,5 0 0,1 12,7A5,5 0 0,1 17,12H21A1,1 0 0,1 22,13A1,1 0 0,1 21,14H3A1,1 0 0,1 2,13A1,1 0 0,1 3,12M5,16H19A1,1 0 0,1 20,17A1,1 0 0,1 19,18H5A1,1 0 0,1 4,17A1,1 0 0,1 5,16M17,20A1,1 0 0,1 18,21A1,1 0 0,1 17,22H7A1,1 0 0,1 6,21A1,1 0 0,1 7,20H17M15,12A3,3 0 0,0 12,9A3,3 0 0,0 9,12H15M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7Z" /></svg>`,
@@ -23,6 +25,9 @@ export const CurrentWeatherPanel = (data, isF = true) => {
 	const currentWeatherContainer = document.createElement('div');
 	currentWeatherContainer.classList.add('current-weather-container');
 
+	const currentWeatherTile = document.createElement('div');
+	currentWeatherTile.classList.add('current-weather-tile');
+
 	const cityName = document.createElement('input');
 	cityName.classList.add('city-name');
 	cityName.type = 'text';
@@ -44,13 +49,75 @@ export const CurrentWeatherPanel = (data, isF = true) => {
 		Number(data.main.temp_max)
 	)}° L: ${Math.round(Number(data.main.temp_min))}°`;
 
-	currentWeatherContainer.appendChild(cityName);
-	currentWeatherContainer.appendChild(currentTemperature);
-	currentWeatherContainer.appendChild(currentWeather);
-	currentWeatherContainer.appendChild(highLowTemps);
-	// currentWeatherContainer.appendChild(EditButton());
+	currentWeatherTile.appendChild(cityName);
+	currentWeatherTile.appendChild(currentTemperature);
+	currentWeatherTile.appendChild(currentWeather);
+	currentWeatherTile.appendChild(highLowTemps);
+
+	currentWeatherContainer.appendChild(currentWeatherTile);
+	currentWeatherContainer.appendChild(TimePanel(isF));
 
 	return currentWeatherContainer;
+};
+
+const TimePanel = (isF) => {
+	const timeContainer = document.createElement('div');
+	timeContainer.classList.add('time-container');
+
+	const h2 = document.createElement('h2');
+	h2.classList.add('time-text');
+	h2.id = 'ct';
+
+	let d = new Date();
+	let minutes = d.getMinutes();
+	minutes = minutes < 10 ? '0' + minutes.toString() : minutes;
+	h2.textContent = `${d.getHours()}:${minutes}`;
+
+	setInterval(time, 1000);
+
+	timeContainer.appendChild(h2);
+	timeContainer.appendChild(OptionsPanel(isF));
+	return timeContainer;
+};
+
+function time() {
+	let d = new Date();
+	let minutes = d.getMinutes();
+	minutes = minutes < 10 ? '0' + minutes.toString() : minutes;
+	document.getElementById('ct').textContent = `${d.getHours()}:${minutes}`;
+}
+
+const OptionsPanel = (isF) => {
+	const optionsContainer = document.createElement('div');
+	optionsContainer.classList.add('options-container');
+
+	optionsContainer.appendChild(radioButton('℉', isF));
+	optionsContainer.appendChild(radioButton('℃', isF));
+
+	return optionsContainer;
+};
+
+const radioButton = (name, isF) => {
+	const buttonContainer = document.createElement('div');
+	buttonContainer.classList.add('radio-container');
+
+	const radio = document.createElement('input');
+	radio.type = 'radio';
+	radio.id = name;
+	radio.name = 'units';
+	radio.checked = (isF && name == '℉') || (!isF && name != '℉');
+
+	radio.addEventListener('change', () => {
+		MainPage('Roxboro', name == '℉');
+	});
+
+	const label = document.createElement('label');
+	label.textContent = name;
+	label.setAttribute('for', name);
+
+	buttonContainer.appendChild(radio);
+	buttonContainer.appendChild(label);
+	return buttonContainer;
 };
 
 export const DailyWeatherPanel = (data, isF = true) => {
@@ -137,13 +204,3 @@ function getDayOfWeek(date) {
 				'Saturday',
 		  ][dayOfWeek];
 }
-
-const EditButton = () => {
-	const button = document.createElement('button');
-	button.className = 'edit-button';
-	button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>circle-edit-outline</title><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12H20A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4V2M18.78,3C18.61,3 18.43,3.07 18.3,3.2L17.08,4.41L19.58,6.91L20.8,5.7C21.06,5.44 21.06,5 20.8,4.75L19.25,3.2C19.12,3.07 18.95,3 18.78,3M16.37,5.12L9,12.5V15H11.5L18.87,7.62L16.37,5.12Z" /></svg>`;
-
-	button.addEventListener('click', () => {});
-
-	return button;
-};
