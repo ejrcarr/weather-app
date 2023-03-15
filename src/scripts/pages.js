@@ -9,8 +9,9 @@ const MainPage = async (place = 'California', isF = true) => {
 	const forecastData = await APIController.getForecastData(data, units);
 
 	document.body.style.backgroundImage = `url(./${BackgroundImage})`;
-	const content = document.getElementById('content');
 
+	const content = document.getElementById('content');
+	content.innerHTML = '';
 	content.appendChild(CurrentWeatherPanel(data, isF));
 	content.appendChild(DailyWeatherPanel(forecastData, isF));
 };
