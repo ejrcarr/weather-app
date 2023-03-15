@@ -47,16 +47,60 @@ button {
     flex-grow: 1;
     flex-shrink: 1;
     text-align: right;
-    /* background:rgba(0, 0, 0, .2); */
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+#search-button {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: 15px;
+    top: 15px;
+    background: none;
+    cursor: pointer;
+}
+
+#search-button svg {
+    fill: white;
+}
+
+.search-city {
+    background: none;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid white;
+    color: white;
+    padding: .2rem;
+    padding-bottom: .5rem;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: lightgray;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: lightgray;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: lightgray;
 }
 
 .time-container h2 {
     font-weight: 200;
 }
 
-.options-container {
+.radio-buttons-container {
     display: flex;
     gap: 1rem;
+    justify-content: flex-end;
 }
 
 input[type='radio'] {
@@ -144,6 +188,10 @@ input[type='radio']:checked + label {
         justify-content: center;
         flex-direction: column-reverse;
         gap: 1rem;
+    }
+
+    .radio-buttons-container {
+        justify-content: center;
     }
 
     .time-container {
