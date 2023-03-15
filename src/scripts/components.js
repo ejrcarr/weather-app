@@ -22,6 +22,8 @@ const ICONS = {
 };
 
 export const CurrentWeatherPanel = (data, isF = true) => {
+	const place = data.name;
+
 	const currentWeatherContainer = document.createElement('div');
 	currentWeatherContainer.classList.add('current-weather-container');
 
@@ -55,12 +57,12 @@ export const CurrentWeatherPanel = (data, isF = true) => {
 	currentWeatherTile.appendChild(highLowTemps);
 
 	currentWeatherContainer.appendChild(currentWeatherTile);
-	currentWeatherContainer.appendChild(TimePanel(isF));
+	currentWeatherContainer.appendChild(TimePanel(place, isF));
 
 	return currentWeatherContainer;
 };
 
-const TimePanel = (isF) => {
+const TimePanel = (place, isF) => {
 	const timeContainer = document.createElement('div');
 	timeContainer.classList.add('time-container');
 
@@ -76,7 +78,7 @@ const TimePanel = (isF) => {
 	setInterval(time, 1000);
 
 	timeContainer.appendChild(h2);
-	timeContainer.appendChild(OptionsPanel(isF));
+	timeContainer.appendChild(OptionsPanel(place, isF));
 	return timeContainer;
 };
 
@@ -87,17 +89,22 @@ function time() {
 	document.getElementById('ct').textContent = `${d.getHours()}:${minutes}`;
 }
 
-const OptionsPanel = (isF) => {
+const OptionsPanel = (place, isF) => {
 	const optionsContainer = document.createElement('div');
 	optionsContainer.classList.add('options-container');
 
-	optionsContainer.appendChild(radioButton('℉', isF));
-	optionsContainer.appendChild(radioButton('℃', isF));
+	const radioButtonsContainer = document.createElement('div');
+	radioButtonsContainer.classList.add('radio-buttons-container');
+
+	radioButtonsContainer.appendChild(radioButton('℉', place, isF));
+	radioButtonsContainer.appendChild(radioButton('℃', place, isF));
+	optionsContainer.appendChild(radioButtonsContainer);
+	optionsContainer.appendChild(searchCityWeather(isF));
 
 	return optionsContainer;
 };
 
-const radioButton = (name, isF) => {
+const radioButton = (name, place, isF) => {
 	const buttonContainer = document.createElement('div');
 	buttonContainer.classList.add('radio-container');
 
@@ -108,7 +115,7 @@ const radioButton = (name, isF) => {
 	radio.checked = (isF && name == '℉') || (!isF && name != '℉');
 
 	radio.addEventListener('change', () => {
-		MainPage('Roxboro', name == '℉');
+		MainPage(place, name == '℉');
 	});
 
 	const label = document.createElement('label');
@@ -139,7 +146,6 @@ const DailyWeatherTile = (day, weatherAndTempInfo, isF) => {
 
 	const dayOfWeek = document.createElement('h3');
 	dayOfWeek.classList.add('day-of-week');
-	console.log('date ' + day);
 	dayOfWeek.textContent = getDayOfWeek(day);
 
 	const temperatureContainer = document.createElement('div');
@@ -161,9 +167,6 @@ const DailyWeatherTile = (day, weatherAndTempInfo, isF) => {
 	dailyWeatherTile.appendChild(dayOfWeek);
 	dailyWeatherTile.appendChild(temperatureContainer);
 	dailyWeatherTile.appendChild(icon);
-
-	console.log(day);
-	console.log(weatherAndTempInfo);
 
 	return dailyWeatherTile;
 };
@@ -203,4 +206,38 @@ function getDayOfWeek(date) {
 				'Friday',
 				'Saturday',
 		  ][dayOfWeek];
+}
+
+const searchCityWeather = (isF) => {
+	const searchContainer = document.createElement('div');
+	searchContainer.classList.add('search-container');
+
+	const search = document.createElement('input');
+	search.type = 'text';
+	search.id = 'search-city';
+	search.className = 'search-city';
+	search.setAttribute('placeholder', 'Search cities...');
+
+	search.addEventListener('keydown', (event) => {
+		if (event.key == 'Enter') {
+			handleSearch(isF);
+		}
+	});
+
+	const submitButton = document.createElement('button');
+	submitButton.type = 'button';
+	submitButton.id = 'search-button';
+	submitButton.addEventListener('click', () => handleSearch(isF));
+	submitButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>magnify</title><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>`;
+
+	searchContainer.appendChild(search);
+	searchContainer.appendChild(submitButton);
+
+	return searchContainer;
+};
+
+function handleSearch(isF) {
+	const searchBar = document.getElementById('search-city');
+	MainPage(searchBar.value, isF);
+	searchBar.value = '';
 }
