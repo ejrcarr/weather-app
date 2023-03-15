@@ -7,6 +7,18 @@ This weather app was developed as a practice project to improve my web developme
 ## Technologies
 This app was built using webpack, vanilla JavaScript, HTML, and CSS. I chose to use webpack to bundle my code and optimize the app's performance. Vanilla JavaScript was used to manipulate the DOM and fetch data from the OpenWeather API. HTML and CSS were used to create the app's structure and style.
 
+## UI Demonstration
+
+### Desktop
+<p align='center'>
+  <img src="https://user-images.githubusercontent.com/110308975/225447006-c24ef6d9-bd40-4a72-b992-9d46f7e90ec1.gif"/>
+</p>
+
+### Mobile
+<p align='center'>
+  <img src="https://user-images.githubusercontent.com/110308975/225447210-406d27ed-95a3-421a-bb67-16981c078bae.gif" width='350px'/>
+</p>
+
 ## Features
 The weather app displays the current weather for today and the daily forecast for the next 5 days using data from the OpenWeather API. It includes a button that allows users to switch units of measurement from degrees Fahrenheit to degrees Celsius. The app also includes a live clock that updates in real-time.
 
