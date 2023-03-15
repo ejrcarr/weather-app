@@ -39,6 +39,11 @@ button {
     max-width: 1300px;
 }
 
+.current-weather-tile svg {
+    width: 200px;
+    height: 200px;
+}
+
 .time-container {
     display: flex;
     flex-direction: column;
