@@ -28,16 +28,51 @@ button {
 }
 
 .current-weather-container {
-    display: inline-flex;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
-    padding: 1rem;
-    margin: 0 8%;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 8%;
     font-size: 2.25rem;
     font-weight: 200;
-    position: relative;
+    max-width: 1300px;
+}
+
+.time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: right;
+    /* background:rgba(0, 0, 0, .2); */
+}
+
+.time-container h2 {
+    font-weight: 200;
+}
+
+.options-container {
+    display: flex;
+    gap: 1rem;
+}
+
+input[type='radio'] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+label {
+    padding: .15rem .75rem;
+    cursor: pointer;
+}
+
+input[type='radio']:checked + label {
+    box-shadow: 0 0 0 1px white;
+    border-radius: 15px;
 }
 
 .city-name {
@@ -105,6 +140,23 @@ button {
 @media screen and (max-width: 925px) {
     .current-weather-container {
         align-items: center;
+        text-align: center;
+        justify-content: center;
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+
+    .time-container {
+        background: none;
+        flex-grow: 0;
+        flex-shrink: 0;
+        border-bottom: 1px solid white;
+        padding-bottom: 1.5rem;
+    }
+
+    .time-container h2 {
+        width: 100%;
+        text-align: center;
     }
 
     .daily-weather-container {
