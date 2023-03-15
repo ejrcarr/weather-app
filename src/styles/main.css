@@ -224,6 +224,7 @@ input[type='radio']:checked + label {
         width: 75vw;
         margin: 0 auto;
         gap: none;
+        margin-bottom: 2rem;
     }
 
     .daily-weather-tile {
